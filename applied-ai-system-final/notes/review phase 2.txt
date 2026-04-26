@@ -1,0 +1,16 @@
+current logic feels manual or overly simple.
+
+1. apply_constraints — pawpal_system.py:127
+It only checks one constraint: total time. The self.constraints dict is stored but never actually read. Owner preferences like "no late feeding" or "morning walks" are collected but completely ignored by the scheduler.
+
+2. sort_tasks — pawpal_system.py:123
+Sorting by priority then duration is a fixed, hardcoded rule. It doesn't account for frequency at all — a task marked "twice daily" gets treated the same as a "weekly" one.
+
+3. Task.frequency — pawpal_system.py:21
+The field is stored but nothing in the system uses it. A litter box task set to "twice daily" only ever appears once in the schedule.
+
+4. Pet.age — pawpal_system.py:41
+Age is stored but never factors into anything. A 10-year-old dog and a puppy get the exact same schedule.
+
+5. Session state in app.py — app.py:50
+The Owner and Pet are created once and frozen. If the user changes the owner name or pet species in the inputs, it has no effect because the if "owner" not in st.session_state guard prevents recreation.

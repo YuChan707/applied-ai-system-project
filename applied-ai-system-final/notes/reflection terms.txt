@@ -1,0 +1,11 @@
+Constraints are the rules or limits the system must respect. Think of it like packing a suitcase — you can only fit so much. In PawPal+, the constraint is time: the owner only has 90 minutes, so not every task can make the cut.
+
+Priorities are how you rank what matters most when you can't do everything. If the suitcase is full and you have to choose between packing shoes vs. a snack, priority tells you which one wins. In PawPal+, feeding is high priority (the pet must eat), playtime is low priority (nice to have).
+
+Tradeoff means every choice has a cost. When you pick one thing, you give something else up. In PawPal+, the tradeoff is: by always doing high-priority tasks first, you guarantee the important stuff gets done — but you might run out of time before getting to the fun, lower-priority tasks. You traded completeness for correctness.
+
+One-sentence version of each:
+
+Constraint = a limit you cannot break
+Priority = what you do first when you can't do it all
+Tradeoff = what you give up in exchange for what you gain

@@ -1,0 +1,36 @@
+investigate st.session_state. Find out how to check if an object (like your Owner instance) already exists in the "vault" of the session before creating a new one.
+
+Think of st.session_state as a dictionary. You want to store your Owner object there so your data persists while you navigate the app.
+st.session_state works exactly like a Python dictionary. The pattern is:
+
+
+if "owner" not in st.session_state:
+    st.session_state.owner = Owner(
+        name=owner_name,
+        available_time=90,
+        preferences=["morning walks"],
+    )
+How it works:
+
+"owner" not in st.session_state — checks if the key exists (same as dict.__contains__)
+If it doesn't exist, create and store it once
+On every rerun (button click, input change), the if block is skipped — the existing Owner survives
+You can also access it anywhere in the app after that:
+
+
+# Read it
+owner = st.session_state.owner
+
+# Modify it
+st.session_state.owner.add_pet(dog)
+
+# Reset/replace it
+del st.session_state.owner   # forces recreation on next rerun
+Applied to your app in app.py, you'd place this after the owner name input so the object is created from what the user typed:
+
+
+owner_name = st.text_input("Owner name", value="Jordan")
+
+if "owner" not in st.session_state:
+    st.session_state.owner = Owner(name=owner_name, available_time=90)
+The key takeaway: check before creating — otherwise every rerun rebuilds the object from scratch and you lose any pets or tasks added during the session.

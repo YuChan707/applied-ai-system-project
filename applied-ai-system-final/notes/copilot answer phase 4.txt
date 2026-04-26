@@ -1,0 +1,78 @@
+💡 Small algorithm / logic improvements for PawPal+ scheduling
+Excellent news: you’re on the right track and this is exactly the kind of feature-rich, incremental improvement that makes a pet planner feel polished. Here are concise, high-impact algorithms to implement in pawpal_system.py (or whichever scheduler class handles Planner).
+
+1. Sort tasks by priority + duration + owner preference
+Sort order:
+priority high/medium/low
+is_recurring (fixed over ad-hoc)
+shortest duration first (for fit-into-bucket)
+optional user time window (morning/afternoon/evening)
+Sample:
+tasks.sort(key=lambda t: (priority_map[t.priority], not t.recurring, t.duration))
+✔️ Benefit: maximal tasks in limited available time.
+
+2. Filter by pet + status + category
+Add parameter support e.g.:
+planner.generate_schedule(owner, pet_names=None, status=None, categories=None)
+Implement on task list:
+tasks = [t for t in tasks if (t.pet in pet_names) and (t.status == status or status is None)]
+✔️ Benefit: user can focus daily view on e.g. “only cat meds” or “pending grooming.”
+
+3. Recurring tasks normalization + expansion
+Task model:
+frequency = None | "daily" | "twice daily" | "weekly"
+next_due datetime
+At schedule generation:
+Expand owner.get_all_tasks() into actual instances due within date window.
+e.g. if t.recurring and t.is_due(today): carry forward and set next_due += frequency_delta.
+✔️ Benefit: no missed tasks, steady work model.
+
+4. Basic conflict detection + resolver (time overlaps)
+Represent timeline as minutes from start-of-day.
+For each candidate task:
+if start_time < existing_end and end_time > existing_start conflict.
+Optionally:
+detect conflicting pet resource (owner can’t feed two pets simultaneously)
+and split into sequential slots or suggest adjust by priority.
+✔️ Benefit: avoid unrealistic overlapping “double-booked” schedules.
+
+5. Fit tasks into available_time (knapsack-inspired)
+Use greedy subset:
+Sort by priority then smallest duration.
+Add until total_duration <= available_time.
+Optionally “best-fit” for better utilization:
+Basic 0/1 knapsack DP for minutes budget.
+✔️ Benefit: optimized plan, minimal wasted time.
+
+6. Status auto-update + history
+Add task.status states ["todo","in-progress","done","skipped"].
+After generation:
+if total_time > available_time: mark lowest priority as “deferred” / “skipped”
+show flagged exceptions.
+✔️ Benefit: clear what got dropped and why (transparency).
+
+📌 Implementation hook ideas
+Add in Task:
+t.contains_keyword() for preference search
+t.interval_score()
+Add in Planner:
+def sort_tasks(self, tasks, mode="efficiency")
+def detect_conflicts(self, schedule)
+def apply_filters(self, tasks, filters)
+🧩 UX-enabled strategy
+In UI (app.py), allow toggles:
+“Show recurring”, “Show by pet”, “Show only pending”
+“Reschedule conflict items” button
+Provide summary:
+Total tasks: 8, Included: 6, Deferred: 2, Remaining min: 12
+🛠️ Quick sample pseudo-output text block (terminal)
+Schedule for Jordan (90 min)
+----------------------------
+1) Mochi: Morning walk (30m, high, recurring)
+2) Luna: Feed breakfast (5m, high, recurring)
+3) Mochi: Feed breakfast (10m, high, recurring)
+4) Luna: Litter box (10m, medium, recurring)
+5) Mochi: Grooming (15m, medium)
+
+Totals: 70m used, 20m free
+Deferred: 1 x Playtime (20m low) due time conflict
