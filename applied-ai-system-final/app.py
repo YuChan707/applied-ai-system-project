@@ -5,46 +5,39 @@
 
 import io
 import json
-import re
+import os
+import random
 from contextlib import redirect_stdout
 
-import anthropic
 import streamlit as st
 from pawpal_system import Task, Pet, Owner, Planner
 from agent import run_agent   # also loads .env at import time
 
+_PRIORITY_OPTS    = ["low", "medium", "high"]
+_FREQ_OPTS        = ["daily", "twice daily", "weekly"]
+_DEFAULT_TASK     = "Morning walk"
 
-_PRIORITY_OPTS = ["low", "medium", "high"]
-_FREQ_OPTS     = ["daily", "twice daily", "weekly"]
+# Load presets once at startup
+_PRESETS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tasks_presets.json")
+with open(_PRESETS_PATH, encoding="utf-8") as _f:
+    _TASK_PRESETS = json.load(_f)
 
 
-def generate_random_task(pet_name: str, pet_type: str) -> dict:
-    client = anthropic.Anthropic()
-    response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=300,
-        messages=[{
-            "role": "user",
-            "content": (
-                f"Generate one realistic pet care task for {pet_name}, a {pet_type}. "
-                "Return ONLY a valid JSON object with exactly these keys: "
-                "task_title (string), duration (integer minutes, realistic for the activity), "
-                "priority (one of: high, medium, low), description (one sentence), "
-                "category (one of: feeding, grooming, walking, hygiene, enrichment, health, training), "
-                "start_time (string HH:MM, realistic time of day), "
-                "frequency (one of: daily, twice daily, weekly). "
-                f"Pick a random activity from: bathing, medication, grooming, nail trimming, "
-                "ear cleaning, dental care, feeding, walking, playtime, litter box, training, "
-                "hair brushing, vet check-up, flea treatment, socialisation. "
-                "No markdown, no explanation — raw JSON only."
-            ),
-        }],
-    )
-    text = response.content[0].text.strip()
-    # Strip markdown code fences if Claude wraps the JSON
-    text = re.sub(r"^```(?:json)?\n?", "", text)
-    text = re.sub(r"\n?```$", "", text)
-    return json.loads(text)
+def _apply_random_task(rt: dict):
+    """Write a task dict into the widget session-state keys."""
+    p = rt.get("priority", "high")
+    f = rt.get("frequency", "daily")
+    st.session_state["_task_title"]  = rt.get("task_title", _DEFAULT_TASK)
+    st.session_state["_duration"]    = max(1, min(240, int(rt.get("duration", 20))))
+    st.session_state["_priority"]    = p if p in _PRIORITY_OPTS else "high"
+    st.session_state["_description"] = rt.get("description", "")
+    st.session_state["_category"]    = rt.get("category", "walking")
+    st.session_state["_start_time"]  = rt.get("start_time", "08:00")
+    st.session_state["_frequency"]   = f if f in _FREQ_OPTS else "daily"
+
+
+def get_preset_task() -> dict:
+    return random.choice(_TASK_PRESETS)
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 st.title("🐾 PawPal+")
@@ -90,32 +83,16 @@ if "owner" not in st.session_state:
 st.divider()
 
 # ── 2. Add a Task ─────────────────────────────────────────────────────────────
-_hdr_col, _rand_col = st.columns([5, 1])
+_hdr_col, _btn_col = st.columns([5, 1])
 with _hdr_col:
     st.subheader(f"Add a Task for {st.session_state.pet.name}")
-with _rand_col:
-    if st.button("Randomize", help="AI suggests a realistic task for your pet"):
-        with st.spinner("Thinking..."):
-            try:
-                _rt = generate_random_task(
-                    st.session_state.pet.name,
-                    st.session_state.pet.pet_type,
-                )
-                _p = _rt.get("priority", "high")
-                _f = _rt.get("frequency", "daily")
-                st.session_state["_task_title"]  = _rt.get("task_title", "Morning walk")
-                st.session_state["_duration"]    = max(1, min(240, int(_rt.get("duration", 20))))
-                st.session_state["_priority"]    = _p if _p in _PRIORITY_OPTS else "high"
-                st.session_state["_description"] = _rt.get("description", "")
-                st.session_state["_category"]    = _rt.get("category", "walking")
-                st.session_state["_start_time"]  = _rt.get("start_time", "08:00")
-                st.session_state["_frequency"]   = _f if _f in _FREQ_OPTS else "daily"
-            except Exception as e:
-                st.error(f"Could not generate task: {e}")
+with _btn_col:
+    if st.button("Randomize", help="Pick a random task from the preset list"):
+        _apply_random_task(get_preset_task())
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    task_title = st.text_input("Task title", value="Morning walk", key="_task_title")
+    task_title = st.text_input("Task title", value=_DEFAULT_TASK, key="_task_title")
 with col2:
     duration = st.number_input("Duration (min)", min_value=1, max_value=240, value=20, key="_duration")
 with col3:

@@ -1,0 +1,182 @@
+[
+  {
+    "task_title": "Bath Time",
+    "duration": 20,
+    "priority": "medium",
+    "description": "Full bath with pet shampoo and towel dry",
+    "category": "hygiene",
+    "start_time": "10:00",
+    "frequency": "weekly"
+  },
+  {
+    "task_title": "Medication",
+    "duration": 5,
+    "priority": "high",
+    "description": "Administer prescribed daily medication with food",
+    "category": "health",
+    "start_time": "08:00",
+    "frequency": "daily"
+  },
+  {
+    "task_title": "Nap Time",
+    "duration": 60,
+    "priority": "low",
+    "description": "Quiet rest period in a comfortable and calm spot",
+    "category": "enrichment",
+    "start_time": "13:00",
+    "frequency": "daily"
+  },
+  {
+    "task_title": "Hair Brushing",
+    "duration": 15,
+    "priority": "medium",
+    "description": "Brush coat thoroughly to prevent matting and tangles",
+    "category": "grooming",
+    "start_time": "09:00",
+    "frequency": "daily"
+  },
+  {
+    "task_title": "Morning Run",
+    "duration": 30,
+    "priority": "high",
+    "description": "Energetic run to burn off energy and stay fit",
+    "category": "walking",
+    "start_time": "07:00",
+    "frequency": "daily"
+  },
+  {
+    "task_title": "Agility Sport Training",
+    "duration": 25,
+    "priority": "medium",
+    "description": "Sport and agility exercises for mental and physical stimulation",
+    "category": "training",
+    "start_time": "16:00",
+    "frequency": "weekly"
+  },
+  {
+    "task_title": "Nail Trimming",
+    "duration": 10,
+    "priority": "medium",
+    "description": "Clip all nails carefully to a safe and comfortable length",
+    "category": "grooming",
+    "start_time": "11:00",
+    "frequency": "weekly"
+  },
+  {
+    "task_title": "Ear Cleaning",
+    "duration": 10,
+    "priority": "medium",
+    "description": "Clean ears with vet-approved solution to prevent infection",
+    "category": "health",
+    "start_time": "10:30",
+    "frequency": "weekly"
+  },
+  {
+    "task_title": "Teeth Brushing",
+    "duration": 5,
+    "priority": "medium",
+    "description": "Brush teeth with pet-safe toothpaste to prevent dental disease",
+    "category": "health",
+    "start_time": "20:00",
+    "frequency": "daily"
+  },
+  {
+    "task_title": "Breakfast Feeding",
+    "duration": 10,
+    "priority": "high",
+    "description": "Serve measured morning meal with fresh water",
+    "category": "feeding",
+    "start_time": "07:30",
+    "frequency": "daily"
+  },
+  {
+    "task_title": "Evening Feeding",
+    "duration": 10,
+    "priority": "high",
+    "description": "Serve measured evening meal with fresh water",
+    "category": "feeding",
+    "start_time": "18:00",
+    "frequency": "daily"
+  },
+  {
+    "task_title": "Playtime",
+    "duration": 20,
+    "priority": "low",
+    "description": "Interactive play session with toys for mental enrichment",
+    "category": "enrichment",
+    "start_time": "15:00",
+    "frequency": "daily"
+  },
+  {
+    "task_title": "Evening Walk",
+    "duration": 30,
+    "priority": "high",
+    "description": "Relaxing evening walk around the neighborhood",
+    "category": "walking",
+    "start_time": "18:30",
+    "frequency": "daily"
+  },
+  {
+    "task_title": "Flea Treatment",
+    "duration": 10,
+    "priority": "high",
+    "description": "Apply monthly flea and tick prevention treatment",
+    "category": "health",
+    "start_time": "09:00",
+    "frequency": "weekly"
+  },
+  {
+    "task_title": "Socialization",
+    "duration": 30,
+    "priority": "medium",
+    "description": "Interaction with other pets or people for social development",
+    "category": "enrichment",
+    "start_time": "14:00",
+    "frequency": "weekly"
+  },
+  {
+    "task_title": "Litter Box",
+    "duration": 10,
+    "priority": "high",
+    "description": "Scoop and refresh litter box to maintain hygiene",
+    "category": "hygiene",
+    "start_time": "08:30",
+    "frequency": "daily"
+  },
+  {
+    "task_title": "Vet Check-up",
+    "duration": 60,
+    "priority": "high",
+    "description": "Routine veterinary examination and health check",
+    "category": "health",
+    "start_time": "10:00",
+    "frequency": "weekly"
+  },
+  {
+    "task_title": "Obedience Training",
+    "duration": 15,
+    "priority": "medium",
+    "description": "Practice sit, stay, and recall commands with positive reinforcement",
+    "category": "training",
+    "start_time": "17:00",
+    "frequency": "daily"
+  },
+  {
+    "task_title": "Outdoor Sport",
+    "duration": 45,
+    "priority": "medium",
+    "description": "Fetch, frisbee, or swimming for active physical exercise",
+    "category": "walking",
+    "start_time": "08:00",
+    "frequency": "weekly"
+  },
+  {
+    "task_title": "Coat Conditioning",
+    "duration": 20,
+    "priority": "low",
+    "description": "Apply coat conditioner and deep brush for shine and health",
+    "category": "grooming",
+    "start_time": "11:30",
+    "frequency": "weekly"
+  }
+]
