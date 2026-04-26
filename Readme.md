@@ -386,3 +386,60 @@ The hardest part was deciding what the system should *not* do. Keeping `Pet.age`
 | RAG enhancement | 80/100 | Retrieval measurably improves specificity; scoring is word-overlap not semantic |
 | Specialist few-shot | 85/100 | Metrics show clear improvement in medical term density and structure |
 | Overall system design | 90/100 | Clean five-class backend, independent layers, fully testable |
+
+---
+
+## How to Run the Project
+
+### Step 1 — Install dependencies
+
+```bash
+pip install -r requirements.txt
+pip install python-dotenv
+```
+
+### Step 2 — Add your API key
+
+Create a `.env` file inside `applied-ai-system-final/`:
+
+```
+ANTHROPIC_API_KEY=sk-ant-your-key-here
+```
+
+> Get a key at https://console.anthropic.com. Only needed for `agent.py`, `rag_advisor.py`, and `specialist.py`.
+
+### Step 3 — Choose what to run
+
+| What | Command | Needs API key? |
+|---|---|---|
+| Web UI (Streamlit) | `python -m streamlit run app.py` | No |
+| CLI demo | `python main.py` | No |
+| Unit tests | `python -m pytest tests/test_pawpal.py -v` | No |
+| Evaluation harness | `python tests/eval_harness.py` | No |
+| Agentic workflow | `python agent.py` | Yes |
+| RAG comparison | `python rag_advisor.py` | Yes |
+| Specialist comparison | `python specialist.py` | Yes |
+
+Run all commands from inside the `applied-ai-system-final/` folder:
+
+```bash
+cd applied-ai-system-final
+```
+
+### Quick start (no API key)
+
+```bash
+cd applied-ai-system-final
+python main.py                              # see the scheduler in action
+python -m streamlit run app.py             # open the web UI at http://localhost:8501
+python -m pytest tests/test_pawpal.py -v   # run unit tests
+```
+
+### Full run (with API key)
+
+```bash
+cd applied-ai-system-final
+python agent.py        # Claude reasons through a 4-step plan → act → verify loop
+python rag_advisor.py  # side-by-side baseline vs. RAG-enhanced answers
+python specialist.py   # generic Claude vs. Dr. PawPal few-shot specialist
+```
